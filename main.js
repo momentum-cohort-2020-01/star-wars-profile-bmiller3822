@@ -101,10 +101,10 @@ fetch('https://swapi.co/api/people/20/')
 //     }})
 
 
-//And here is the attempt to solve with Problem.all....Close but no cigar. 
 
-//Example from class:
-/* globals fetch */
+
+//Example from class: ********THIS IS WHAT FINALLY GOT IT TO WORK ***************
+
 // const profileDiv = document.querySelector('#profile')
 
 // fetch('https://swapi.co/api/people/14/')
@@ -142,6 +142,10 @@ fetch('https://swapi.co/api/people/20/')
 //     }
 //     profileDiv.appendChild(ul)
 //   })
+
+
+
+
 
 //Commenting this out for now but it's what I submitted for the homework.
 // fetch('https://swapi.co/api/people/20/')
