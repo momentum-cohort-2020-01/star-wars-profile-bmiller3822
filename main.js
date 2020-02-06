@@ -1,3 +1,73 @@
+//EDIT: I FINALLY MADE IT WORK!  WOO!  Final code is below:
+
+let starWarsData
+
+const yoda = document.querySelector("#yoda")
+
+fetch('https://swapi.co/api/people/20/')
+    .then(function (response) {
+        return response.json()
+    })
+
+    .then(function (data) {
+        let starWarsData = data
+        for (const trait in data) {
+            const listItem = document.createElement("p")
+            console.log("Where are we?")
+            if (trait == "birth_year" || trait == "height" || trait == "starships") {
+                listItem.innerText = (trait + ": " + data[trait])
+                if (data[trait] == "") {
+                    listItem.innerText = (trait + ": None")
+                }
+                listItem.classList.add("lh-copy", "measure", "center", "f6", "black-70", "capitalize")
+                yoda.appendChild(listItem)
+            }
+        }
+    })
+
+fetch('https://swapi.co/api/people/20/')
+    .then(res => res.json())
+    .then(data => {
+        return data.species
+    })
+    .then (speciesURL => {
+        const fetches = speciesURL.map(url => fetch(url))
+        return Promise.all(fetches)
+    })
+    .then(responses => {
+        return Promise.all(responses.map(res => res.json()))
+    })
+    .then(dataArray=> {
+        for (const species of dataArray){
+            const listItem = document.createElement('p')
+            listItem.innerText = ("Species: " + species.name)
+            listItem.classList.add("lh-copy", "measure", "center", "f6", "black-70", "capitalize")
+            yoda.appendChild(listItem)
+        }
+    })
+
+fetch('https://swapi.co/api/people/20/')
+    .then(res => res.json())
+    .then(data => {
+        return data.homeworld
+    })
+    .then (homeworld => fetch (homeworld))
+    .then(response => response.json())
+    .then(data => {
+            const listItem = document.createElement('p')
+            listItem.innerText = ("Homeworld: " + data.name)
+            listItem.classList.add("lh-copy", "measure", "center", "f6", "black-70", "capitalize")
+            yoda.appendChild(listItem)  
+    })
+
+
+
+
+
+//==================================Notes, failed attempts, and other nonsense ============================================
+
+
+
 //This commented code works mostly, but I tried really hard to solve the dual URL problem (homeworld and species) 
 //for Yoda using Promise.all and couldn't quite figure it out.  I feel like I'm on the cusp but don't 
 //fully understand Promise.all enough to work through the problem.  Feel like I gave it a valient 
@@ -32,61 +102,76 @@
 
 
 //And here is the attempt to solve with Problem.all....Close but no cigar. 
-let starWarsData
-let planetsURL
-let speciesURL
 
-const yoda = document.querySelector("#yoda")
+//Example from class:
+/* globals fetch */
+// const profileDiv = document.querySelector('#profile')
 
-fetch('https://swapi.co/api/people/20/')
-    .then(function (response) {
-        return response.json()
-    })
+// fetch('https://swapi.co/api/people/14/')
+//   .then(res => res.json())
+//   .then(data => {
+//     console.log('The data we get back from the first fetch:', data)
+//     const h2 = document.createElement('h2')
+//     h2.innerText = data.name
+//     profileDiv.appendChild(h2)
+//     return data.films
+//   })
+//   .then(filmURLs => {
+//     // console.log(filmURLs)
+//     const fetches = filmURLs.map(url => fetch(url))
+//     console.log(
+//       'Here are the return values from the fetches we created by mapping over the film urls:',
+//       fetches
+//     )
+//     return Promise.all(fetches)
+//   })
+//   .then(responses => {
+//     console.log('Promise.all returns these responses:', responses)
+//     return Promise.all(responses.map(res => res.json()))
+//   })
+//   .then(dataArray => {
+//     console.log(
+//       'Once we call .json() on the above, we get back this array of json objects',
+//       dataArray
+//     )
+//     const ul = document.createElement('ul')
+//     for (const film of dataArray) {
+//       const li = document.createElement('li')
+//       li.innerText = film.title
+//       ul.appendChild(li)
+//     }
+//     profileDiv.appendChild(ul)
+//   })
 
-    .then(function (data) {
-        let starWarsData = data
-        for (const trait in data) {
-            const listItem = document.createElement("p")
-            console.log("Where are we?")
-            if (trait == "birth_year" || trait == "height" || trait == "starships") {
-                listItem.innerText = (trait + ": " + data[trait])
-                if (data[trait] == "") {
-                    listItem.innerText = (trait + ": None")
-                }
-                listItem.classList.add("lh-copy", "measure", "center", "f6", "black-70", "capitalize")
-                yoda.appendChild(listItem)
-            }
-        }
-    })
-
-fetch('https://swapi.co/api/people/20/')
-    .then(function (response) {
-        return response.json()
-    })
-    .then(function (data) {
-        let starWarsData = data
-        let planetsURL = data.homeworld
-        let speciesURL = data.species[0]
-        var urls = [planetsURL, speciesURL]
-        Promise.all(urls.map(url =>
-            fetch(url)
-                .then(function (urls) {
-                    return urls.json()
-                })))
-        console.log(urls)
-        for (const trait in data) {
-            const listItem = document.createElement("p")
-            console.log("Where are we TWO?")
-            if (trait == "species" || trait == "homeworld") {
-                listItem.innerText = (trait + ": " + data[trait])
-                if (data[trait] == "") {
-                    listItem.innerText = (trait + ": None")
-                }
-                listItem.classList.add("lh-copy", "measure", "center", "f6", "black-70", "capitalize")
-                yoda.appendChild(listItem)
-            }
-        }
-    })
+//Commenting this out for now but it's what I submitted for the homework.
+// fetch('https://swapi.co/api/people/20/')
+//     .then(function (response) {
+//         return response.json()
+//     })
+//     .then(function (data) {
+//         let starWarsData = data
+//         let planetsURL = data.homeworld
+//         let speciesURL = data.species[0]
+//         var urls = [planetsURL, speciesURL]
+//         Promise.all(urls.map(url =>
+//             fetch(url)
+//                 .then(function (urls) {
+//                     return urls.json()
+//                 })))
+//         console.log(urls)
+//         for (const trait in data) {
+//             const listItem = document.createElement("p")
+//             console.log("Where are we TWO?")
+//             if (trait == "species" || trait == "homeworld") {
+//                 listItem.innerText = (trait + ": " + data[trait])
+//                 if (data[trait] == "") {
+//                     listItem.innerText = (trait + ": None")
+//                 }
+//                 listItem.classList.add("lh-copy", "measure", "center", "f6", "black-70", "capitalize")
+//                 yoda.appendChild(listItem)
+//             }
+//         }
+//     })
 
 
 
